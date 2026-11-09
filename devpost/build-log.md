@@ -359,3 +359,33 @@ Refreshed to stop the brew, restored the standard camera, and confirmed `Pinch d
 ### Save
 
 After verification, `model.project.save()` returned Execution Succeeded with saved: true and project `CoffeeMaker/CoffeeMaker.esproj`. This section was appended directly AFTER that editor save. No publishing, pushing, submitting, raw HTTP, or launch of another Lens Studio version.
+
+## Kettle pour animation — 2026-11-09
+
+### Scope and method
+
+Only Assets/Scripts/DripLineMain.ts received implementation additions: retain the existing kettle root and three kettle contact shadows, cache the bed offset, and call updateKettle before the Idle return. Existing kettle children move together under the root. The supplied math tracks the dot 3.5 cm above its position, smooths tip tracking at 20/s, smoothsteps lift over approximately one second, and back-computes the root around the tip with -0.49 rad tilt. The stream is scaled and rotated from its base toward that tip; contact shadows are enabled only when grounded. Geometry, materials, phase table/timing, guidance, labels, colliders, steam, chimes and enterPhase width logic remain unchanged.
+
+Preview-demo staging only: on device the user's real kettle is in hand and is never modeled. This change follows the requested staging implementation; it does not introduce a separate device visibility gate.
+
+### Live-code and continuous verification
+
+Forced TypeScript recompilation succeeded. The first refresh returned errors=[] and printed `DripLine kettle: bedOffset=0.00,15.40,10.00` followed by `DripLine ready: pinch dripper`. The offset passed the sanity gate. No source-write workaround or API adaptation was needed; all supplied math was used unchanged.
+
+MovePreviewCamera used a command array with flat coordinates: position (0,145,-40), lookAt (0,97.5,-120). Posted DripLineStart exactly ONCE and ran one continuous real-time loop without resets. Phase log times: Bloom 0.000; Pour 1 45.052; Rest 75.019; Pour 2 90.014; Drawdown 120.055; Done 150.022 seconds. The strict ±0.05 s criterion was NOT fully met: Pour 1 exceeded its upper tolerance by 0.002 s and Drawdown by 0.005 s. No schedule changes or second start were made to conceal these results.
+
+Exactly four chimes logged: Pour 1, Pour 2, Drawdown, Done. No DripLine runtime errors. The tail included the existing LEAF ConnectedRunService discovery warning; initial and final refresh verification windows both returned errors=[].
+
+| Capture | Approximate elapsed seconds | Visual inspection |
+| --- | ---: | --- |
+| devpost/captures/kettle-anim-bloom.png | 20.0 | Tilted kettle, connected tip-to-dot stream, no visible body overlap |
+| devpost/captures/kettle-anim-pour1.png | 54.6 | Spiral tracking near bed edge, connected stream, body clear of dripper/server |
+| devpost/captures/kettle-anim-rest.png | 81.6 | Upright at rest, three contact shadows visible |
+| devpost/captures/kettle-anim-pour2.png | 99.6 | Spiral tracking near bed edge, connected stream, body clear of dripper/server |
+| devpost/captures/kettle-anim-drawdown.png | 129.6 | Upright at rest, contact shadows visible, stream hidden |
+
+All five actual PreviewPanelTool captures are 1393×1590 PNGs with includeChrome:false and absolute output paths. Inspected every capture: no clear tip-to-stream gap or body interpenetration, so no corrective adjustment or second loop. The approximately 20-second Bloom capture shows the centered dot after its initial circling segment; the existing guide timing was retained. Pour captures sample near the edge, not every point of the 4.5 cm maximum-radius trajectory.
+
+### Idle and save
+
+Refreshed after the continuous loop; live Text query confirmed enabled `Pinch dripper: start`. The initialize print again confirmed bedOffset=0.00,15.40,10.00. `model.project.save()` returned Execution Succeeded with saved:true. This section was appended directly AFTER that editor save. No publishing, pushing, submitting, raw HTTP, or launch of another Lens Studio version.

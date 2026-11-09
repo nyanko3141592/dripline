@@ -22,6 +22,8 @@ export class DripLineMain extends BaseScriptComponent {
  public phaseProgress=0; public chimeCount=0; public phaseHistory:{name:string,time:number,ringFill:number,chimeCount:number}[]=[];
  private coffeeLiquid:SceneObject;
  private pourStream:SceneObject;
+ private kettle:SceneObject; private kettleShadows:SceneObject[]=[];
+ private bedOffset=new vec3(0,0,0); private kettleLift=0; private kettleTip=new vec3(-8.75,13.5,-10);
  private steam:{o:SceneObject,v:RenderMeshVisual,alpha:number}[]=[];
  private phaseIndex=-1; private phaseRing:SceneObject; private phaseArc:PhaseArc;
  private started=0; private ready=false; private dot:SceneObject; private bloom:SceneObject;
@@ -49,11 +51,12 @@ export class DripLineMain extends BaseScriptComponent {
    const halo=child(this.server,'Set contact shadow '+i,new vec3(0,[0.012,0.02,0.028][i],0));
    halo.getTransform().setLocalScale(new vec3(1.15,1,1));
    visual(halo,disc([13,15.5,18][i]),this.material,new vec4(0.05,0.04,0.03,[0.16,0.11,0.07][i]));
-   visual(child(this.counter,'Kettle contact shadow '+i,new vec3(-20,[2.012,2.02,2.028][i],-10)),disc([5.6,6.4,7.2][i]),this.material,new vec4(0.05,0.04,0.03,[0.17,0.12,0.08][i]));
+   const kettleShadow=child(this.counter,'Kettle contact shadow '+i,new vec3(-20,[2.012,2.02,2.028][i],-10));this.kettleShadows.push(kettleShadow);
+   visual(kettleShadow,disc([5.6,6.4,7.2][i]),this.material,new vec4(0.05,0.04,0.03,[0.17,0.12,0.08][i]));
   }
   const charcoal=new vec4(0.22,0.22,0.235,1),walnut=new vec4(0.36,0.25,0.17,1);
   // Tall kettle remains rear-left, clear of the mat and pinch collider.
-  const kettle=child(this.counter,'Gooseneck kettle',new vec3(-20,2,-10));
+  const kettle=child(this.counter,'Gooseneck kettle',new vec3(-20,2,-10));this.kettle=kettle;
   visual(kettle,lathe([[0,0],[3.9,0],[4.7,0.35],[5.0,1.4],[5.05,3.2],[4.95,5.5],[4.7,7.8],[4.3,9.8],[3.8,11.4],[3.15,12.6],[2.8,13.3],[2.75,13.9],[0,13.9]]),this.material,charcoal);
   visual(child(kettle,'Kettle lid',vec3.zero()),lathe([[0,13.9],[2.9,13.9],[3.0,14.15],[2.65,14.4],[0,14.4]]),this.material,new vec4(0.31,0.31,0.32,1));
   visual(child(kettle,'Kettle lid knob',vec3.zero()),lathe([[0,14.4],[0.95,14.45],[1.05,14.8],[0.8,15.25],[0.42,15.55],[0,15.6]]),this.material,walnut);
@@ -114,6 +117,9 @@ export class DripLineMain extends BaseScriptComponent {
   pinchInteractable.onTriggerStart.add(()=>this.startBrew());
   this.phaseRing=child(this.server,'DripLine Phase Ring',new vec3(0,0.67,0));this.phaseArc=new PhaseArc(D.phaseRingRadius,D.phaseRingWidth);visual(this.phaseRing,this.phaseArc.getMesh(),this.material,new vec4(1,0.88,0.42,0.9));
   this.audio=this.dripper.createComponent('Component.AudioComponent');this.audio.audioTrack=this.chime;this.audio.volume=this.chimeVolume;this.audio.playbackMode=Audio.PlaybackMode.LowLatency;this.audio.spatialAudio.enabled=true;
+  const bw=this.bed.getTransform().getWorldPosition(),cw=this.counter.getTransform().getWorldPosition();
+  this.bedOffset=new vec3(bw.x-cw.x,bw.y-cw.y,bw.z-cw.z);
+  print('DripLine kettle: bedOffset='+this.bedOffset.x.toFixed(2)+','+this.bedOffset.y.toFixed(2)+','+this.bedOffset.z.toFixed(2));
   this.clearGuidance();this.ready=true;print('DripLine ready: pinch dripper');
  }
  private setHover(on:boolean){this.dripperVisual.mainMaterial.mainPass.baseColor=on?new vec4(1,1,0.85,1):new vec4(0.96,0.93,0.88,1);}
@@ -137,6 +143,7 @@ export class DripLineMain extends BaseScriptComponent {
  }
  private update(){
   if(!this.ready)return;
+  this.updateKettle();
   if(this.phase==='Idle'){this.labelUI.setLabel('Pinch dripper: start');return;}
   this.elapsed=getTime()-this.started;
   // The phase table is the sole schedule. Process boundaries in order even after a slow frame.
@@ -166,6 +173,35 @@ export class DripLineMain extends BaseScriptComponent {
    const r=D.targetRadius*Math.sin(Math.PI*this.phaseProgress),a=this.phaseProgress*Math.PI*8;
    const pos=new vec3(r*Math.cos(a),0.08,r*Math.sin(a));this.moveDot(pos.x,pos.z);this.updateTrail(pos,this.elapsed);
   }else if(p.guide==='rest')this.moveDot(0,0);
+ }
+ // Preview-demo staging only: on device, the user's real kettle is in hand and is never modeled.
+ private updateKettle(){
+  const dt=Math.min(getDeltaTime(),0.05);
+  const p=this.phaseIndex>=0?DripLinePhases[this.phaseIndex]:null;
+  const pouring=!!p&&(p.guide==='bloom'||p.guide==='spiral');
+  this.kettleLift+=Math.max(-dt,Math.min(dt,(pouring?1:0)-this.kettleLift));
+  const l=this.kettleLift,e=l*l*(3-2*l);
+  const dl=this.dot.getTransform().getLocalPosition();
+  const above=new vec3(this.bedOffset.x+dl.x,this.bedOffset.y+dl.y+3.5,this.bedOffset.z+dl.z);
+  if(pouring){const k=Math.min(1,dt*20);this.kettleTip=this.kettleTip.add(above.sub(this.kettleTip).uniformScale(k));}
+  const tip=new vec3(-8.75+(this.kettleTip.x+8.75)*e,13.5+(this.kettleTip.y-13.5)*e,-10+(this.kettleTip.z+10)*e);
+  const ang=-0.49*e,ca=Math.cos(ang),sa=Math.sin(ang);
+  const rx=11.25*ca-11.5*sa,ry=11.25*sa+11.5*ca;
+  this.kettle.getTransform().setLocalPosition(new vec3(tip.x-rx,tip.y-ry,tip.z));
+  this.kettle.getTransform().setLocalRotation(quat.angleAxis(ang,new vec3(0,0,1)));
+  const grounded=l<=0.001;this.kettleShadows.forEach(s=>s.enabled=grounded);
+  if(this.pourStream.enabled){
+   const base=this.pourStream.getTransform().getLocalPosition();
+   const dir=new vec3(tip.x-this.bedOffset.x-base.x,tip.y-this.bedOffset.y-base.y,tip.z-this.bedOffset.z-base.z);
+   const len=dir.length;
+   if(len>0.05){
+    const w=p&&p.guide==='bloom'?0.55:1,dn=dir.uniformScale(1/len);
+    this.pourStream.getTransform().setLocalScale(new vec3(w,len/17,w));
+    const ax=new vec3(0,1,0).cross(dn),al=ax.length;
+    const axis=al>0.001?ax.uniformScale(1/al):new vec3(1,0,0);
+    this.pourStream.getTransform().setLocalRotation(quat.angleAxis(Math.acos(Math.max(-1,Math.min(1,dn.y))),axis));
+   }
+  }
  }
  private moveDot(x:number,z:number){this.pourStream.getTransform().setLocalPosition(new vec3(x,0,z));this.dot.getTransform().setLocalPosition(new vec3(x,0.09,z));this.dotRadius=Math.sqrt(x*x+z*z);}
  private updateTrail(pos:vec3,t:number){
