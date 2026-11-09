@@ -261,7 +261,7 @@ File-watcher deviation: although highlight source/helper removal was on disk bef
 - Verification: TypeScript recompilation succeeded. Refreshed preview reported errors=[] and DripLine ready at 11:09:53.705 JST. Standard video camera set with MovePreviewCamera command array and flat fields: position (0,145,-40), lookAt (0,97.5,-120). First composition accepted after actual image inspection: tall body, distinct lid/knob, low S-spout with downward tip, open opposite-side handle, no cropping or brew-set/phase-label-area occlusion.
 - Capture: devpost/captures/kettle-rebuild-1.png, produced with PreviewPanelTool action screenshot, absolute outputPath and includeChrome:false; verified as a real 1392x1657 PNG and inspected by the primary agent. Existing thin outside-Lens panel margins remain unchanged.
 - Runtime health: posted DripLineStart exactly ONCE; Bloom began at 11:10:33.387 JST (elapsed 0.000). No DripLine or runtime JavaScript errors; pre-existing adb timeout warnings only. No full brew loop or gesture simulation performed. Reset preview to idle afterward; DripLine ready logged at 11:10:44.781 JST.
-- Save: model.project.save() returned saved:true for /Users/takahashinaoki/Dev/specs-learn-hackathon/CoffeeMaker/CoffeeMaker.esproj at approximately 11:10:46 JST. This section was appended directly after that editor save. No publishing, pushing, submitting, timing changes or raw HTTP.
+- Save: model.project.save() returned saved:true for CoffeeMaker/CoffeeMaker.esproj at approximately 11:10:46 JST. This section was appended directly after that editor save. No publishing, pushing, submitting, timing changes or raw HTTP.
 
 
 ## In-Lens instructional text — 2026-11-09
@@ -322,7 +322,7 @@ Design-brief deviation: the owner's direct instruction supersedes the brief's ex
 | devpost/captures/label-done.png | 152.002 | Final Done message, width OK |
 | devpost/captures/label-idle-after.png | 157.004 | Final Idle instruction restored, width OK |
 
-All captures are actual 1392×1657 PNGs. `model.project.save()` returned `Execution Succeeded`, `saved: true`, project `/Users/takahashinaoki/Dev/specs-learn-hackathon/CoffeeMaker/CoffeeMaker.esproj` after final capture/log verification. This section was appended directly to disk **after that editor save**. No publishing, pushing, submitting or raw HTTP.
+All captures are actual 1392×1657 PNGs. `model.project.save()` returned `Execution Succeeded`, `saved: true`, project `CoffeeMaker/CoffeeMaker.esproj` after final capture/log verification. This section was appended directly to disk **after that editor save**. No publishing, pushing, submitting or raw HTTP.
 
 ## Pinch target widening — 2026-11-09
 
@@ -358,4 +358,4 @@ Refreshed to stop the brew, restored the standard camera, and confirmed `Pinch d
 
 ### Save
 
-After verification, `model.project.save()` returned Execution Succeeded with saved: true and project `/Users/takahashinaoki/Dev/specs-learn-hackathon/CoffeeMaker/CoffeeMaker.esproj`. This section was appended directly AFTER that editor save. No publishing, pushing, submitting, raw HTTP, or launch of another Lens Studio version.
+After verification, `model.project.save()` returned Execution Succeeded with saved: true and project `CoffeeMaker/CoffeeMaker.esproj`. This section was appended directly AFTER that editor save. No publishing, pushing, submitting, raw HTTP, or launch of another Lens Studio version.
