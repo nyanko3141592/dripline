@@ -1,0 +1,70 @@
+- !<AssetImportMetadata/bdc12084-9735-47da-951f-7155bdd52dc7>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> 7c63a686-262b-4aef-95ef-5474c55fad25
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> 7c63a686-262b-4aef-95ef-5474c55fad25
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 230c9296-8a9c-4e1b-9147-c52dba94ddc6
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/230c9296-8a9c-4e1b-9147-c52dba94ddc6>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 5125fc65-1094-413b-9214-2770d91741ba
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    bed: false
+    chime: false
+    chimeVolume: false
+    counter: false
+    debugColliders: false
+    dripper: false
+    labelUI: false
+    material: false
+    server: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - counter: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      server: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      dripper: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      bed: !<reference.SceneObject> 00000000-0000-0000-0000-000000000000
+      labelUI: !<MappingBased.AssignableType_1> 00000000-0000-0000-0000-000000000000
+      material: !<reference.Material> 00000000-0000-0000-0000-000000000000
+      chime: !<reference.AudioTrackAsset> 00000000-0000-0000-0000-000000000000
+      chimeVolume: 0.250000
+      debugColliders: false
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input SceneObject counter {"hint":"Authored counter at 88 cm; top is 90 cm"}'
+    - '// @input SceneObject server {"hint":"Authored server base on the counter"}'
+    - '// @input SceneObject dripper {"hint":"Authored cone base, also the SIK target"}'
+    - '// @input SceneObject bed {"hint":"Authored coffee bed surface"}'
+    - '// @input AssignableType_1 labelUI {"hint":"Passive counter label UI"}'
+    - '// @input Asset.Material material {"hint":"Unlit stand-in and guide material"}'
+    - '// @input Asset.AudioTrackAsset chime {"hint":"Soft completion cue"}'
+    - '// @input float chimeVolume = 0.25 {"hint":"Completion chime volume", "widget":"slider", "min":0, "max":1, "step":0.05}'
+    - '// @input bool debugColliders {"hint":"Show the large pinch collider for debugging"}'

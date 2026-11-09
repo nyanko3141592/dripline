@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Lens Studio generated / local state
+Cache/
+*.lock
+.virtual-scene.json
+PluginsUserPreferences/
+Workspaces/
+ls-live-instance.json
+
+# Local agent / MCP configuration (may contain tokens — never commit)
+.mcp.json
+.cursor/mcp.json
+.vscode/mcp.json
+.codex/config.toml
+.claude/settings.local.json
+leaf_plugin_settings.json
+spk_debug_key.pem
+
+# Working screenshots
+devpost/captures/

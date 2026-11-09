@@ -1,0 +1,46 @@
+- !<AssetImportMetadata/407eb2e3-2a24-4dc7-ab8e-736e9369a2dd>
+  ImportedAssetIds:
+    TypeScriptAsset: !<reference> b10a112b-378c-4bbd-8e74-27a9056fe629
+  ImporterName: TypeScriptAssetImporter
+  PrimaryAsset: !<reference> b10a112b-378c-4bbd-8e74-27a9056fe629
+  PackageType: NotAPackage
+  LegacyPackagePolicy: ~
+  ExtraData:
+    {}
+  AssetDataMap:
+    TypeScriptAsset: !<own> 257b1814-f32f-467e-bb5e-3bae2609cac7
+  DependentFiles:
+    []
+  ImporterSettings: !<AssetImporterSettings>
+    {}
+  CompressionSettings: !<own> 00000000-0000-0000-0000-000000000000
+- !<TypeScriptAssetData/257b1814-f32f-467e-bb5e-3bae2609cac7>
+  SvgIcon: ""
+  SetupScript:
+    code: ""
+  Description: ""
+  VersionMajor: 0
+  VersionMinor: 0
+  VersionPatch: 0
+  VersionPrerelease: ""
+  UpdateOrder: 0
+  ComponentUid: 7643f3e4-eec7-4eaf-a2e6-4571e792645a
+  ExportUid: 00000000-0000-0000-0000-000000000000
+  PackagePolicy: CanBeUnpacked
+  ScriptInputsHidden:
+    letterHeightCm: false
+  ScriptTypesHidden:
+    {}
+  ReadMe: !<reference> 00000000-0000-0000-0000-000000000000
+  DeclarationFile: !<reference> 00000000-0000-0000-0000-000000000000
+  Tags:
+    []
+  Attachments:
+    []
+  DefaultScriptInputs:
+    - letterHeightCm: 2.500000
+  ScriptTypes:
+    -
+      {}
+  InputLines:
+    - '// @input float letterHeightCm = 2.5 {"hint":"Visible letter height in centimeters", "widget":"slider", "min":1, "max":4, "step":0.1}'
